@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Unit 2 Quiz | What Are They Making?</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Tahoma, Arial, sans-serif;
+    background:#f4f8f6;
+    color:#183153;
+}
+
+.container{
+    width:min(900px,94%);
+    margin:30px auto;
+}
+
+.header{
+    background:linear-gradient(135deg,#078c4b,#39b96c);
+    color:white;
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:38px;
+}
+
+.header p{
+    margin:10px 0 0;
+}
+
+.card{
+    background:white;
+    margin-top:20px;
+    padding:25px;
+    border-radius:22px;
+    box-shadow:0 8px 25px rgba(0,0,0,.07);
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:2px solid #dbe5df;
+    border-radius:12px;
+    font-size:17px;
+    margin:7px 0 15px;
+}
+
+button{
+    border:0;
+    border-radius:12px;
+    padding:14px 20px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.start-btn,
+.next-btn{
+    background:#11995a;
+    color:white;
+}
+
+.start-btn{
+    width:100%;
+}
+
+.previous-btn{
+    background:#e8eef3;
+    color:#183153;
+}
+
+.hidden{
+    display:none;
+}
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#e6eee9;
+    border-radius:50px;
+    margin:15px 0 25px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:#19a961;
+    width:0%;
+    transition:.3s;
+}
+
+.question{
+    direction:ltr;
+    text-align:left;
+    font-size:26px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.hint{
+    direction:ltr;
+    text-align:left;
+    color:#718096;
+    margin:8px 0 20px;
+}
+
+.options{
+    display:grid;
+    gap:12px;
+}
+
+.option{
+    width:100%;
+    background:white;
+    border:2px solid #dce5e0;
+    color:#183153;
+    direction:ltr;
+    text-align:left;
+}
+
+.option:hover{
+    border-color:#159a59;
+}
+
+.option.selected{
+    border-color:#159a59;
+    background:#e1f7eb;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+}
+
+.actions button{
+    flex:1;
+}
+
+.message{
+    color:#d63031;
+    margin-top:12px;
+}
+
+.score{
+    text-align:center;
+    font-size:65px;
+    color:#11995a;
+    font-weight:bold;
+}
+
+.result-title{
+    text-align:center;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:25px;
+}
+
+.stat{
+    text-align:center;
+    background:#f7faf8;
+    padding:15px;
+    border-radius:15px;
+}
+
+.stat strong{
+    display:block;
+    font-size:25px;
+}
+
+.review{
+    margin-top:25px;
+}
+
+.review-item{
+    padding:15px;
+    border-radius:14px;
+    border:1px solid #dde7e1;
+    margin-bottom:10px;
+}
+
+.correct{
+    border-right:6px solid #16a05a;
+}
+
+.wrong{
+    border-right:6px solid #e74c3c;
+}
+
+.review-question{
+    direction:ltr;
+    text-align:left;
+    font-weight:bold;
+}
+
+.teacher{
+    background:#fff9e7;
+    border-right:5px solid #f6ad22;
+}
+
+@media(max-width:600px){
+
+    .header h1{
+        font-size:28px;
+    }
+
+    .question{
+        font-size:22px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div>SUPER GOAL 2 • UNIT 2</div>
+
+        <h1>What Are They Making?</h1>
+
+        <p>
+            Present Progressive Quiz
+        </p>
+
+        <p>
+            اختبار تفاعلي لطلاب الصف الثاني المتوسط
+        </p>
+
+    </div>
+
+
+    <!-- START -->
+
+    <div id="startScreen" class="card">
+
+        <h2>🎯 ابدأ الاختبار</h2>
+
+        <label>
+            اسم الطالب
+        </label>
+
+        <input
+        id="studentName"
+        placeholder="اكتب اسمك">
+
+        <label>
+            الفصل
+        </label>
+
+        <input
+        id="studentClass"
+        placeholder="مثال: 2 / 1">
+
+        <button
+        id="startButton"
+        class="start-btn">
+            ابدأ الاختبار
+        </button>
+
+        <div
+        id="startMessage"
+        class="message">
+        </div>
+
+    </div>
+
+
+    <!-- QUIZ -->
+
+    <div id="quizScreen" class="card hidden">
+
+        <div class="quiz-top">
+
+            <strong id="studentInfo"></strong>
+
+            <span id="questionCounter"></span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+            id="progressBar"
+            class="progress-bar">
+            </div>
+
+        </div>
+
+
+        <div
+        id="question"
+        class="question">
+        </div>
+
+
+        <div
+        id="hint"
+        class="hint">
+        </div>
+
+
+        <div
+        id="options"
+        class="options">
+        </div>
+
+
+        <div
+        id="quizMessage"
+        class="message">
+        </div>
+
+
+        <div class="actions">
+
+            <button
+            id="previousButton"
+            class="previous-btn">
+                السابق
+            </button>
+
+            <button
+            id="nextButton"
+            class="next-btn">
+                التالي
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="resultScreen" class="card hidden">
+
+        <div
+        id="score"
+        class="score">
+        </div>
+
+        <h2
+        id="resultTitle"
+        class="result-title">
+        </h2>
+
+        <p
+        id="resultMessage"
+        style="text-align:center">
+        </p>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                الصحيح
+
+                <strong id="correctCount"></strong>
+
+            </div>
+
+            <div class="stat">
+
+                الخطأ
+
+                <strong id="wrongCount"></strong>
+
+            </div>
+
+            <div class="stat">
+
+                النسبة
+
+                <strong id="percentage"></strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+            id="reviewButton"
+            class="previous-btn">
+                مراجعة الإجابات
+            </button>
+
+            <button
+            id="retryButton"
+            class="next-btn">
+                محاولة جديدة
+            </button>
+
+        </div>
+
+
+        <div
+        id="review"
+        class="review hidden">
+        </div>
+
+    </div>
+
+
+    <div class="card teacher">
+
+        <strong>
+            👨‍🏫 للمعلم
+        </strong>
+
+        <p>
+            يظهر للطالب اسمه ودرجته ونسبة النجاح،
+            ويمكنه مراجعة الأسئلة التي أخطأ فيها.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+question:
+"Excuse me. What ___ ?",
+hint:
+"happen",
+options:[
+"is happening",
+"are happening",
+"happens",
+"happening"
+],
+answer:
+"is happening"
+},
+
+{
+question:
+"They ___ a TV series.",
+hint:
+"make",
+options:[
+"are making",
+"is making",
+"make",
+"making"
+],
+answer:
+"are making"
+},
+
+{
+question:
+"I ___ detective stories.",
+hint:
+"love",
+options:[
+"love",
+"am loving",
+"is loving",
+"loving"
+],
+answer:
+"love"
+},
+
+{
+question:
+"Eric ___ to Brad Novak now.",
+hint:
+"talk",
+options:[
+"is talking",
+"talks",
+"are talking",
+"talking"
+],
+answer:
+"is talking"
+},
+
+{
+question:
+"He ___ a raincoat.",
+hint:
+"wear",
+options:[
+"is wearing",
+"wears",
+"are wearing",
+"wearing"
+],
+answer:
+"is wearing"
+},
+
+{
+question:
+"Adam usually ___ a smart detective.",
+hint:
+"play",
+options:[
+"plays",
+"is playing",
+"play",
+"are playing"
+],
+answer:
+"plays"
+},
+
+{
+question:
+"In this scene, he ___ an explosion.",
+hint:
+"hear",
+options:[
+"hears",
+"is hearing",
+"hear",
+"hearing"
+],
+answer:
+"hears"
+},
+
+{
+question:
+"Oh, look! They ___ to film.",
+hint:
+"start",
+options:[
+"are starting",
+"start",
+"is starting",
+"starts"
+],
+answer:
+"are starting"
+},
+
+{
+question:
+"What ___ you doing now?",
+hint:
+"Choose am / is / are",
+options:[
+"are",
+"is",
+"am",
+"do"
+],
+answer:
+"are"
+},
+
+{
+question:
+"She ___ reading a book now.",
+hint:
+"Negative",
+options:[
+"isn't",
+"aren't",
+"don't",
+"not"
+],
+answer:
+"isn't"
+},
+
+{
+question:
+"___ he making a cake?",
+hint:
+"Question",
+options:[
+"Is",
+"Are",
+"Am",
+"Does"
+],
+answer:
+"Is"
+},
+
+{
+question:
+"Are they playing football?",
+hint:
+"Positive short answer",
+options:[
+"Yes, they are.",
+"Yes, they is.",
+"Yes, they do.",
+"Yes, they aren't."
+],
+answer:
+"Yes, they are."
+},
+
+{
+question:
+"Is she reading?",
+hint:
+"Negative short answer",
+options:[
+"No, she isn't.",
+"No, she aren't.",
+"No, she doesn't.",
+"No, she not."
+],
+answer:
+"No, she isn't."
+},
+
+{
+question:
+"We ___ football now.",
+hint:
+"play",
+options:[
+"are playing",
+"is playing",
+"play",
+"plays"
+],
+answer:
+"are playing"
+},
+
+{
+question:
+"Which sentence is correct?",
+hint:
+"Present Progressive",
+options:[
+"He is cooking dinner.",
+"He cooking dinner.",
+"He are cooking dinner.",
+"He is cook dinner."
+],
+answer:
+"He is cooking dinner."
+}
+
+];
+
+
+let quizQuestions = [];
+
+let studentAnswers = [];
+
+let currentQuestion = 0;
+
+let studentName = "";
+
+let studentClass = "";
+
+
+const startScreen =
+document.getElementById("startScreen");
+
+const quizScreen =
+document.getElementById("quizScreen");
+
+const resultScreen =
+document.getElementById("resultScreen");
+
+
+
+function shuffle(array){
+
+    let copy = [...array];
+
+    for(
+        let i = copy.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+        Math.floor(
+            Math.random() * (i + 1)
+        );
+
+        [
+            copy[i],
+            copy[j]
+        ]
+        =
+        [
+            copy[j],
+            copy[i]
+        ];
+
+    }
+
+    return copy;
+
+}
+
+
+
+function startQuiz(){
+
+    studentName =
+    document
+    .getElementById("studentName")
+    .value
+    .trim();
+
+
+    studentClass =
+    document
+    .getElementById("studentClass")
+    .value
+    .trim();
+
+
+    if(!studentName){
+
+        document
+        .getElementById("startMessage")
+        .textContent =
+        "اكتب اسم الطالب أولًا.";
+
+        return;
+
+    }
+
+
+    quizQuestions =
+    shuffle(questions)
+    .map(question => ({
+
+        ...question,
+
+        options:
+        shuffle(question.options)
+
+    }));
+
+
+    studentAnswers =
+    new Array(
+        quizQuestions.length
+    )
+    .fill(null);
+
+
+    currentQuestion = 0;
+
+
+    document
+    .getElementById("studentInfo")
+    .textContent =
+    studentName
+    +
+    (
+        studentClass
+        ?
+        " • الفصل " + studentClass
+        :
+        ""
+    );
+
+
+    startScreen.classList.add("hidden");
+
+    resultScreen.classList.add("hidden");
+
+    quizScreen.classList.remove("hidden");
+
+
+    renderQuestion();
+
+}
+
+
+
+function renderQuestion(){
+
+    const question =
+    quizQuestions[currentQuestion];
+
+
+    document
+    .getElementById("questionCounter")
+    .textContent =
+    `السؤال ${currentQuestion + 1} من ${quizQuestions.length}`;
+
+
+    document
+    .getElementById("progressBar")
+    .style
+    .width =
+    (
+        (
+            currentQuestion + 1
+        )
+        /
+        quizQuestions.length
+        *
+        100
+    )
+    +
+    "%";
+
+
+    document
+    .getElementById("question")
+    .textContent =
+    question.question;
+
+
+    document
+    .getElementById("hint")
+    .textContent =
+    "Hint: "
+    +
+    question.hint;
+
+
+    const optionsBox =
+    document
+    .getElementById("options");
+
+
+    optionsBox.innerHTML = "";
+
+
+    question
+    .options
+    .forEach(option => {
+
+
+        const button =
+        document.createElement(
+            "button"
+        );
+
+
+        button.type =
+        "button";
+
+
+        button.className =
+        "option";
+
+
+        button.textContent =
+        option;
+
+
+        if(
+            studentAnswers[
+                currentQuestion
+            ]
+            === option
+        ){
+
+            button.classList.add(
+                "selected"
+            );
+
+        }
+
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                studentAnswers[
+                    currentQuestion
+                ]
+                =
+                option;
+
+
+                renderQuestion();
+
+            }
+        );
+
+
+        optionsBox.appendChild(
+            button
+        );
+
+    });
+
+
+
+    const previous =
+    document
+    .getElementById("previousButton");
+
+
+    previous.disabled =
+    currentQuestion === 0;
+
+
+    previous.style.opacity =
+    currentQuestion === 0
+    ?
+    ".4"
+    :
+    "1";
+
+
+    document
+    .getElementById("nextButton")
+    .textContent =
+    currentQuestion
+    ===
+    quizQuestions.length - 1
+    ?
+    "إنهاء الاختبار"
+    :
+    "التالي";
+
+
+    document
+    .getElementById("quizMessage")
+    .textContent =
+    "";
+
+}
+
+
+
+function nextQuestion(){
+
+    if(
+        studentAnswers[
+            currentQuestion
+        ]
+        ===
+        null
+    ){
+
+        document
+        .getElementById("quizMessage")
+        .textContent =
+        "اختر إجابة قبل المتابعة.";
+
+        return;
+
+    }
+
+
+    if(
+        currentQuestion
+        <
+        quizQuestions.length - 1
+    ){
+
+        currentQuestion++;
+
+        renderQuestion();
+
+    }
+
+    else{
+
+        finishQuiz();
+
+    }
+
+}
+
+
+
+function previousQuestion(){
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        renderQuestion();
+
+    }
+
+}
+
+
+
+function finishQuiz(){
+
+    let correct = 0;
+
+
+    quizQuestions
+    .forEach(
+        (
+            question,
+            index
+        )
+        => {
+
+            if(
+                studentAnswers[index]
+                ===
+                question.answer
+            ){
+
+                correct++;
+
+            }
+
+        }
+    );
+
+
+    const total =
+    quizQuestions.length;
+
+
+    const wrong =
+    total - correct;
+
+
+    const percent =
+    Math.round(
+        correct
+        /
+        total
+        *
+        100
+    );
+
+
+    quizScreen.classList.add(
+        "hidden"
+    );
+
+
+    resultScreen.classList.remove(
+        "hidden"
+    );
+
+
+    document
+    .getElementById("score")
+    .textContent =
+    `${correct}/${total}`;
+
+
+    document
+    .getElementById("correctCount")
+    .textContent =
+    correct;
+
+
+    document
+    .getElementById("wrongCount")
+    .textContent =
+    wrong;
+
+
+    document
+    .getElementById("percentage")
+    .textContent =
+    percent + "%";
+
+
+    document
+    .getElementById("resultTitle")
+    .textContent =
+    "أحسنت يا "
+    +
+    studentName
+    +
+    " 👏";
+
+
+    let message = "";
+
+
+    if(percent >= 90){
+
+        message =
+        "ممتاز! أتقنت قاعدة Present Progressive.";
+
+    }
+
+    else if(percent >= 75){
+
+        message =
+        "جيد جدًا! راجع الأخطاء البسيطة.";
+
+    }
+
+    else if(percent >= 60){
+
+        message =
+        "جيد، لكن تحتاج إلى مراجعة بعض الصيغ.";
+
+    }
+
+    else{
+
+        message =
+        "راجع am / is / are + verb-ing ثم أعد المحاولة.";
+
+    }
+
+
+    document
+    .getElementById("resultMessage")
+    .textContent =
+    message;
+
+
+    createReview();
+
+}
+
+
+
+function createReview(){
+
+    const review =
+    document
+    .getElementById("review");
+
+
+    review.innerHTML = "";
+
+
+    quizQuestions
+    .forEach(
+        (
+            question,
+            index
+        )
+        => {
+
+
+            const correct =
+            studentAnswers[index]
+            ===
+            question.answer;
+
+
+            const item =
+            document.createElement(
+                "div"
+            );
+
+
+            item.className =
+            "review-item "
+            +
+            (
+                correct
+                ?
+                "correct"
+                :
+                "wrong"
+            );
+
+
+            const questionText =
+            document.createElement(
+                "div"
+            );
+
+
+            questionText.className =
+            "review-question";
+
+
+            questionText.textContent =
+            `${index + 1}. ${question.question}`;
+
+
+            const answerText =
+            document.createElement(
+                "p"
+            );
+
+
+            answerText.textContent =
+            "إجابتك: "
+            +
+            studentAnswers[index];
+
+
+            item.appendChild(
+                questionText
+            );
+
+
+            item.appendChild(
+                answerText
+            );
+
+
+            if(!correct){
+
+                const correctText =
+                document.createElement(
+                    "p"
+                );
+
+
+                correctText.innerHTML =
+                "<strong>الإجابة الصحيحة:</strong> "
+                +
+                question.answer;
+
+
+                item.appendChild(
+                    correctText
+                );
+
+            }
+
+
+            review.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    review.classList.add(
+        "hidden"
+    );
+
+}
+
+
+
+function toggleReview(){
+
+    const review =
+    document
+    .getElementById("review");
+
+
+    const button =
+    document
+    .getElementById("reviewButton");
+
+
+    review.classList.toggle(
+        "hidden"
+    );
+
+
+    button.textContent =
+    review.classList.contains(
+        "hidden"
+    )
+    ?
+    "مراجعة الإجابات"
+    :
+    "إخفاء المراجعة";
+
+}
+
+
+
+function retryQuiz(){
+
+    resultScreen.classList.add(
+        "hidden"
+    );
+
+
+    startScreen.classList.remove(
+        "hidden"
+    );
+
+
+    document
+    .getElementById("reviewButton")
+    .textContent =
+    "مراجعة الإجابات";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+
+document
+.getElementById("startButton")
+.addEventListener(
+    "click",
+    startQuiz
+);
+
+
+document
+.getElementById("nextButton")
+.addEventListener(
+    "click",
+    nextQuestion
+);
+
+
+document
+.getElementById("previousButton")
+.addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+document
+.getElementById("reviewButton")
+.addEventListener(
+    "click",
+    toggleReview
+);
+
+
+document
+.getElementById("retryButton")
+.addEventListener(
+    "click",
+    retryQuiz
+);
+
+</script>
+
+</body>
+</html>
